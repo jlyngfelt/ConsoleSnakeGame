@@ -107,3 +107,38 @@ private void GenerateFood()
     food = (foodRow, foodCol);
     gameBoard[foodRow, foodCol] = FOOD;
 }
+
+private void ProcessInput()
+{
+    // Kontrollera om det finns någon tangent att läsa 
+    if (Console.KeyAvailable)
+    {
+        // Läs tangenten utan att visa den på skärmen
+        var key = Console.ReadKey(true).Key;
+        
+        // Uppdatera riktningen baserat på tangenttryck
+        // (Se till att ormen inte kan vända helt om)
+        switch (key)
+        {
+            case ConsoleKey.UpArrow:
+                if (currentDirection != Direction.Down)
+                    currentDirection = Direction.Up;
+                break;
+            case ConsoleKey.DownArrow:
+                if (currentDirection != Direction.Up)
+                    currentDirection = Direction.Down;
+                break;
+            case ConsoleKey.LeftArrow:
+                if (currentDirection != Direction.Right)
+                    currentDirection = Direction.Left;
+                break;
+            case ConsoleKey.RightArrow:
+                if (currentDirection != Direction.Right)
+                    currentDirection = Direction.Right;
+                break;
+            case ConsoleKey.Escape:
+                gameOver = true; // Avsluta spelet om Escape trycks
+                break;
+        }
+    }
+}
