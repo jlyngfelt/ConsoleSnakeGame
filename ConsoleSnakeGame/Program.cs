@@ -50,7 +50,7 @@ namespace CoolSnakeGame
     private void Initialize()
     {
         gameBoard = new char[height, width];
-        
+
         for (int row = 0; row < height; row++)
         {
             for (int col = 0; col < width; col++)
@@ -66,30 +66,44 @@ namespace CoolSnakeGame
                 }
             }
         }
-    
+
         // Placera ormen i mitten av spelplanen
         snake = new List<(int row, int col)>();
         int startRow = height / 2;
         int startCol = width / 2;
-    
+
         // Skapa ormen med 3 delar
-        snake.Add((startRow, startCol));     // Huvud
+        snake.Add((startRow, startCol)); // Huvud
         snake.Add((startRow, startCol - 1)); // Kropp
         snake.Add((startRow, startCol - 2)); // Svans
-    
+
         // Sätt initial riktning
         currentDirection = Direction.Right;
-    
+
         // Sätt spelet till aktivt
         gameOver = false;
         score = 0;
-    
+
         // Generera första maten
         GenerateFood();
     }
+}
+
+private void GenerateFood()
+{
+    Random random = new Random();
+    int foodRow, foodCol;
     
+    do
+    {
+        // Generera slumpmässiga koordinater (undvik väggarna)
+        foodRow = random.Next(1, height - 1);
+        foodCol = random.Next(1, width - 1);
+        
+        // Kontrollera om positionen är tom (inte innehåller någon del av ormen)
+    } while (snake.Contains((foodRow, foodCol)));
     
-    
-    
-    
+    // Placera maten på spelplanen med hjälp av random
+    food = (foodRow, foodCol);
+    gameBoard[foodRow, foodCol] = FOOD;
 }
