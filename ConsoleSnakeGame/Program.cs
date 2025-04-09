@@ -137,8 +137,74 @@ private void ProcessInput()
                     currentDirection = Direction.Right;
                 break;
             case ConsoleKey.Escape:
-                gameOver = true; // Avsluta spelet om Escape trycks
+                gameOver = true; // Avsluta spelet om Escape trycks på
                 break;
         }
     }
 }
+
+private void Update()
+{
+    // Beräkna nästa position för ormens huvud baserat på nuvarande riktning
+    (int headRow, int headCol) = snake[0]; // Nuvarande huvudposition
+    (int newRow, int newCol) = (0, 0);     // Nästa huvudposition
+    
+    // Beräkna ny position baserat på riktning
+    switch (currentDirection)
+    {
+        case Direction.Up:
+            newRow = headRow - 1;
+            newCol = headCol;
+            break;
+        case Direction.Down:
+            newRow = headRow + 1;
+            newCol = headCol;
+            break;
+        case Direction.Left:
+            newRow = headRow;
+            newCol = headCol - 1;
+            break;
+        case Direction.Right:
+            newRow = headRow;
+            newCol = headCol + 1;
+            break;
+    }
+    
+    // Kontrollera kollisioner
+    if (CheckCollision(newRow, newCol))
+    {
+        gameOver = true;
+        return;
+    }
+    
+    // Kontrollera om ormen äter mat
+    bool ateFood = (newRow == food.row && newCol == food.col);
+    
+    // Lägg till nytt huvud
+    snake.Insert(0, (newRow, newCol));
+    
+    // Om ormen inte åt mat, .....(ta bort svansen)
+    if (!ateFood)
+    {
+        // Ta bort sista segmentet (svansen)
+        (int tailRow, int tailCol) = snake[snake.Count - 1];
+        gameBoard[tailRow, tailCol] = EMPTY; // Rensa svansens position på spelplanen
+        snake.RemoveAt(snake.Count - 1);
+    }
+    else
+    {
+        // Om ormen åt mat
+        score++; // Öka poängen
+        GenerateFood(); // Generera ny mat
+        
+        // Öka hastigheten lite (minska väntetiden)
+        if (gameSpeed > 50)
+        {
+            gameSpeed -= 5;
+        }
+    }
+    
+    // Uppdatera spelplanen med ormens nya position
+    UpdateGameBoard();
+}
+
