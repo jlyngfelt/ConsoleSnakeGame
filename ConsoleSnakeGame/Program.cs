@@ -9,11 +9,14 @@ namespace CoolSnakeGame
     {
         static void Main(string[] args)
         {
+            Console.Title = "Console Snake";
             Console.CursorVisible = false;
             
-            //logik för när spelet körs
+            Game game = new Game();
+            game.Run();
             
-            //logik för när man förlorar
+            Console.WriteLine("Spelet är slut! Tryck på valfri tangent för att avsluta.");
+            Console.ReadKey();
         }
     }
 
@@ -277,9 +280,28 @@ private void Render()
         gameDisplay += "\n";
     }
     
-    // Visa instruktioner
+    // Visa instruktioner 
     gameDisplay += "Använd piltangenterna för att styra. ESC för att avsluta.";
     
     // Skriv ut hela spelplanen på en gång
     Console.Write(gameDisplay);
+}
+
+public void Run()
+{
+    // Huvudspellopen
+    while (!gameOver)
+    {
+        // Hantera användarinput
+        ProcessInput();
+        
+        // Uppdatera spellogiken
+        Update();
+        
+        // Rendera spelplanen
+        Render();
+        
+        // Pausa för att kontrollera spelhastigheten
+        Thread.Sleep(gameSpeed);
+    }
 }
