@@ -227,3 +227,59 @@ private bool CheckCollision(int row, int col)
     
     return false;
 }
+
+private void UpdateGameBoard()
+{
+    // Rensa ormen från spelplanen (håll kvar väggar och mat)
+    for (int row = 0; row < height; row++)
+    {
+        for (int col = 0; col < width; col++)
+        {
+            if (gameBoard[row, col] != WALL && gameBoard[row, col] != FOOD)
+            {
+                gameBoard[row, col] = EMPTY;
+            }
+        }
+    }
+    
+    // Rita ormens kropp
+    for (int i = 1; i < snake.Count; i++)
+    {
+        (int row, int col) = snake[i];
+        gameBoard[row, col] = SNAKE_BODY;
+    }
+    
+    // Rita ormens huvud
+    (int headRow, int headCol) = snake[0];
+    gameBoard[headRow, headCol] = SNAKE_HEAD;
+}
+
+
+
+private void Render()
+{
+    // Placera markören i övre vänstra hörnet, är inte detta default?
+    Console.SetCursorPosition(0, 0);
+    
+    // Gör en string för hela spelplanen (tom) 
+    string gameDisplay = "";
+    
+    // Lägg till poänginformation
+    gameDisplay += $"Poäng: {score}\n";
+    
+    // Rendera spelplanen
+    for (int row = 0; row < height; row++)
+    {
+        for (int col = 0; col < width; col++)
+        {
+            gameDisplay += gameBoard[row, col];
+        }
+        gameDisplay += "\n";
+    }
+    
+    // Visa instruktioner
+    gameDisplay += "Använd piltangenterna för att styra. ESC för att avsluta.";
+    
+    // Skriv ut hela spelplanen på en gång
+    Console.Write(gameDisplay);
+}
