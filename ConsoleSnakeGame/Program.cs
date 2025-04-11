@@ -208,3 +208,22 @@ private void Update()
     UpdateGameBoard();
 }
 
+private bool CheckCollision(int row, int col)
+{
+    // Kontrollera om kollision händer med väggar
+    if (gameBoard[row, col] == WALL)
+    {
+        return true;
+    }
+    
+    // Kontrollera kollision med ormens kropp (förutom svansen som kommer att försvinna??)
+    for (int i = 0; i < snake.Count - 1; i++)
+    {
+        if (snake[i].row == row && snake[i].col == col)
+        {
+            return true;
+        }
+    }
+    
+    return false;
+}
