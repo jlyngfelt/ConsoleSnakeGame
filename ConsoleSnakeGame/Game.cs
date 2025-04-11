@@ -22,7 +22,7 @@ namespace CoolSnakeGame
         private void Initialize()
         {
             int width = 30;
-            int height = 30;
+            int height = 20;
             
             gameBoard = new GameBoard(width, height);
             snake = new Snake(height / 2, width / 2);
@@ -31,7 +31,6 @@ namespace CoolSnakeGame
             gameOver = false;
             score = 0;
             
-            // Generera första maten
             GenerateFood();
         }
 
@@ -74,48 +73,39 @@ namespace CoolSnakeGame
 
         private void Update()
         {
-            // Beräkna nästa position
             (int newRow, int newCol) = snake.CalculateNextHeadPosition();
             
-            // Kontrollera kollisioner
             if (CheckCollision(newRow, newCol))
             {
                 gameOver = true;
                 return;
             }
             
-            // Kontrollera om ormen äter mat
             bool ateFood = (newRow == food.row && newCol == food.col);
             
-            // Flytta ormen
             snake.Move(ateFood);
             
             if (ateFood)
             {
-                // Om ormen åt mat
                 score++;
                 GenerateFood();
-                
-                // Öka hastigheten lite
+
                 if (gameSpeed > 50)
                 {
                     gameSpeed -= 5;
                 }
             }
-            
-            // Uppdatera spelplanen
+
             UpdateGameBoard();
         }
 
         private bool CheckCollision(int row, int col)
         {
-            // Kontrollera kollision med vägg
             if (gameBoard.IsWall(row, col))
             {
                 return true;
             }
             
-            // Kontrollera kollision med ormen själv
             return snake.WillCollideWithSelf((row, col));
         }
 
@@ -132,10 +122,8 @@ namespace CoolSnakeGame
             
             string gameDisplay = "";
             
-            // Lägg till poänginformation
             gameDisplay += $"Poäng: {score}\n";
             
-            // Rendera spelplanen
             for (int row = 0; row < gameBoard.Height; row++)
             {
                 for (int col = 0; col < gameBoard.Width; col++)
@@ -145,7 +133,6 @@ namespace CoolSnakeGame
                 gameDisplay += "\n";
             }
             
-            // Visa instruktioner
             gameDisplay += "Använd piltangenterna för att styra. ESC för att avsluta.";
             
             Console.Write(gameDisplay);

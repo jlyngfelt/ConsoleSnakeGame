@@ -15,24 +15,20 @@ namespace CoolSnakeGame
         public Snake(int startRow, int startCol)
         {
             Body = new List<(int row, int col)>();
-            
-            // Skapa ormen med 3 delar
-            Body.Add((startRow, startCol)); // Huvud
-            Body.Add((startRow, startCol - 1)); // Kropp
-            Body.Add((startRow, startCol - 2)); // Svans
+
+            Body.Add((startRow, startCol)); 
+            Body.Add((startRow, startCol - 1)); 
+            Body.Add((startRow, startCol - 2)); 
             
             CurrentDirection = Direction.Right;
         }
         
         public void Move(bool grow)
         {
-            // Beräkna nästa position för huvudet baserat på riktning
             (int newRow, int newCol) = CalculateNextHeadPosition();
-            
-            // Lägg till nytt huvud
+
             Body.Insert(0, (newRow, newCol));
             
-            // Om ormen inte ska växa, ta bort svansen
             if (!grow)
             {
                 Body.RemoveAt(Body.Count - 1);
@@ -55,7 +51,6 @@ namespace CoolSnakeGame
         
         public bool WillCollideWithSelf((int row, int col) nextPosition)
         {
-            // Kontrollera kollision med kroppen (förutom svansen)
             for (int i = 0; i < Body.Count - 1; i++)
             {
                 if (Body[i].row == nextPosition.row && Body[i].col == nextPosition.col)

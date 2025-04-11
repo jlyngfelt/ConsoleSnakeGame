@@ -21,11 +21,9 @@ namespace CoolSnakeGame
             
             do
             {
-                // Generera slumpmässiga koordinater (undvik väggarna)
                 foodRow = random.Next(1, boardHeight - 1);
                 foodCol = random.Next(1, boardWidth - 1);
                 
-                // Fortsätt loopa tills vi hittar en position som inte är upptagen
             } while (occupiedPositions.Contains((foodRow, foodCol)));
             
             return (foodRow, foodCol);
